@@ -2,11 +2,22 @@ package com.polengolas.cache.model;
 
 import java.io.Serializable;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Product implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String category;
     private String name;
+
+    public Product() {
+    }
 
     public Product(Long id, String category, String name) {
         this.id = id;
@@ -41,9 +52,9 @@ public class Product implements Serializable {
     @Override
     public String toString() {
         return "Product{" +
-                "id=" + id +
-                ", category='" + category + '\'' +
-                ", name='" + name + '\'' +
-                '}';
+               "id=" + id +
+               ", category='" + category + '\'' +
+               ", name='" + name + '\'' +
+               '}';
     }
 }

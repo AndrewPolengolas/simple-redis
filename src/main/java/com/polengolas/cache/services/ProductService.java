@@ -1,40 +1,37 @@
 package com.polengolas.cache.services;
 
 import com.polengolas.cache.model.Product;
+import com.polengolas.cache.repository.ProductRepository;
+
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class ProductService {
 
-    Map<Long, Product> products = new HashMap<>() {{
-        put(1L, new Product(1L, "Notebook", "Macbook Pro"));
-        put(2L, new Product(2L, "Notebook", "XPS"));
-        put(3L, new Product(3L, "Notebook", "Alienware"));
-        put(4L, new Product(4L, "Notebook", "Thinkpad"));
-        put(5L, new Product(5L, "Notebook", "Zenbook"));
-    }};
+    private final ProductRepository productRepository;
+
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     @Cacheable("products")
     public Product getById(Long id){
         System.out.println("Buscando produtos");
 
-        simulateLatency();
+        // simulateLatency();
 
-        return products.get(id);
+        return productRepository.findById(id).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
     }
 
-    private void simulateLatency() {
+    // private void simulateLatency() {
 
-        try {
-            long time = 1000L;
-            Thread.sleep(time);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    //     try {
+    //         long time = 1000L;
+    //         Thread.sleep(time);
+    //     } catch (InterruptedException e) {
+    //         throw new RuntimeException(e);
+    //     }
+    // }
 
 }
